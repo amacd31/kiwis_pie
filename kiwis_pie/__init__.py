@@ -1,5 +1,5 @@
 from collections import namedtuple
-QueryOption = namedtuple('QueryOption', ['wildcard', 'list'])
+QueryOption = namedtuple('QueryOption', ['wildcard', 'list', 'parser'])
 
 import pandas as pd
 import re
@@ -17,25 +17,28 @@ class KIWIS(object):
             'format': 'json',
         }
 
+        def parse_date(input_dt):
+            return pd.datetools.to_datetime(input_dt).strftime('%Y-%m-%d')
+
         gen_kiwis_method(
             self.__class__,
             'getTimeseriesList',
             {
-                'station_no': QueryOption(True, True),
-                'station_id': QueryOption(False, True),
-                'station_name': QueryOption(True, True),
-                'ts_id': QueryOption(False, True),
-                'ts_path': QueryOption(True, True),
-                'ts_name': QueryOption(True, True),
-                'ts_shortname': QueryOption(True, True),
-                'ts_type_id': QueryOption(False, True),
-                'parametertype_id': QueryOption(False, True),
-                'parametertype_name': QueryOption(True, True),
-                'stationparameter_name': QueryOption(True, True),
-                'stationparameter_no': QueryOption(False, True),
-                'ts_unitname': QueryOption(True, True),
-                'timeseriesgroup_id': QueryOption(False, False),
-                'fulltext': QueryOption(True, False),
+                'station_no': QueryOption(True, True, None),
+                'station_id': QueryOption(False, True, None),
+                'station_name': QueryOption(True, True, None),
+                'ts_id': QueryOption(False, True, None),
+                'ts_path': QueryOption(True, True, None),
+                'ts_name': QueryOption(True, True, None),
+                'ts_shortname': QueryOption(True, True, None),
+                'ts_type_id': QueryOption(False, True, None),
+                'parametertype_id': QueryOption(False, True, None),
+                'parametertype_name': QueryOption(True, True, None),
+                'stationparameter_name': QueryOption(True, True, None),
+                'stationparameter_no': QueryOption(False, True, None),
+                'ts_unitname': QueryOption(True, True, None),
+                'timeseriesgroup_id': QueryOption(False, False, None),
+                'fulltext': QueryOption(True, False, None),
             },
             [
                 'station_no',
@@ -69,12 +72,12 @@ class KIWIS(object):
             self.__class__,
             'getTimeseriesValues',
             {
-                'ts_id': QueryOption(False, True),
-                'timeseriesgroup_id': QueryOption(False, True),
-                'ts_path': QueryOption(True, True),
-                'from': QueryOption(None, None),
-                'to': QueryOption(None, None),
-                'period': QueryOption(None, None),
+                'ts_id': QueryOption(False, True, None),
+                'timeseriesgroup_id': QueryOption(False, True, None),
+                'ts_path': QueryOption(True, True, None),
+                'from': QueryOption(None, None, parse_date),
+                'to': QueryOption(None, None, parse_date),
+                'period': QueryOption(None, None, None),
             },
             [
                 'Timestamp',
@@ -98,19 +101,19 @@ class KIWIS(object):
             self.__class__,
             'getStationList',
             {
-                'station_no': QueryOption(True, True),
-                'station_id': QueryOption(False, True),
-                'station_name': QueryOption(True, True),
-                'catchment_no': QueryOption(False, True),
-                'catchment_id': QueryOption(False, True),
-                'catchment_name': QueryOption(True, True),
-                'site_no': QueryOption(False, True),
-                'site_id': QueryOption(False, True),
-                'site_name': QueryOption(False, True),
-                'stationgroup_id': QueryOption(False, False),
-                'parametertype_id': QueryOption(False, True),
-                'parametertype_name': QueryOption(True, True),
-                'stationparameter_name': QueryOption(True, True),
+                'station_no': QueryOption(True, True, None),
+                'station_id': QueryOption(False, True, None),
+                'station_name': QueryOption(True, True, None),
+                'catchment_no': QueryOption(False, True, None),
+                'catchment_id': QueryOption(False, True, None),
+                'catchment_name': QueryOption(True, True, None),
+                'site_no': QueryOption(False, True, None),
+                'site_id': QueryOption(False, True, None),
+                'site_name': QueryOption(False, True, None),
+                'stationgroup_id': QueryOption(False, False, None),
+                'parametertype_id': QueryOption(False, True, None),
+                'parametertype_name': QueryOption(True, True, None),
+                'stationparameter_name': QueryOption(True, True, None),
             },
             [
                 'station_no',
@@ -148,6 +151,9 @@ def gen_kiwis_method(cls, method_name, available_query_options, available_return
         for query_key in kwargs.keys():
             if query_key not in available_query_options.keys():
                 raise ValueError(query_key)
+
+            if available_query_options[query_key].parser is not None:
+                kwargs[query_key] = available_query_options[query_key].parser(kwargs[query_key])
 
         for return_key in return_fields:
             if return_key not in available_return_fields:
