@@ -24,6 +24,7 @@ setup(
     install_requires= [
         'pandas',
         'requests',
+        'tabulate',
     ],
     packages = ['kiwis_pie'],
     test_suite = 'nose.collector',

@@ -4,6 +4,7 @@ QueryOption = namedtuple('QueryOption', ['wildcard', 'list', 'parser'])
 import pandas as pd
 import re
 import requests
+from tabulate import tabulate
 
 import logging
 logger = logging.getLogger(__name__)
@@ -145,8 +146,6 @@ def gen_kiwis_method(cls, method_name, available_query_options, available_return
     snake_name = re.sub('([a-z0-9])([A-Z])', r'\1_\2', start_snake).lower()
 
     def kiwis_method(self, return_fields = None, **kwargs):
-        """
-        """
 
         for query_key in kwargs.keys():
             if query_key not in available_query_options.keys():
@@ -174,5 +173,30 @@ def gen_kiwis_method(cls, method_name, available_query_options, available_return
             return pd.DataFrame(json_data[0]['data'], columns = json_data[0]['columns'].split(','))
         else:
             raise NotImplementedError("Method '{0}' has no return implemented.".format(method_name))
+
+    docstring = {}
+    docstring['doc_intro'] = "Python method to query the '{0}' KiWIS method.".format(snake_name)
+
+    docstring['return_fields'] = "Takes the return_fields keyword argument, which is a list made up from the following available fields:\n\t{0}.".format(',\n\t'.join(available_return_fields))
+
+    doc_map = {
+        True: 'yes',
+        False: 'no',
+        None: 'n/a',
+    }
+
+    option_list = [['Queryfield name', '* as wildcard', 'accepts list']]
+    for option_name, option_details in available_query_options.items():
+        option_list.append(
+            [
+                option_name,
+                doc_map[option_details.wildcard],
+                doc_map[option_details.list],
+            ]
+        )
+
+    docstring['query_option_table'] = tabulate(option_list, headers = 'firstrow')
+
+    kiwis_method.func_doc = "{doc_intro}\n\n{query_option_table}\n\n{return_fields}".format(**docstring)
 
     setattr(cls, snake_name, kiwis_method)
