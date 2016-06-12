@@ -19,6 +19,54 @@ class KIWIS(object):
 
         gen_kiwis_method(
             self.__class__,
+            'getTimeseriesList',
+            {
+                'station_no': QueryOption(True, True),
+                'station_id': QueryOption(False, True),
+                'station_name': QueryOption(True, True),
+                'ts_id': QueryOption(False, True),
+                'ts_path': QueryOption(True, True),
+                'ts_name': QueryOption(True, True),
+                'ts_shortname': QueryOption(True, True),
+                'ts_type_id': QueryOption(False, True),
+                'parametertype_id': QueryOption(False, True),
+                'parametertype_name': QueryOption(True, True),
+                'stationparameter_name': QueryOption(True, True),
+                'stationparameter_no': QueryOption(False, True),
+                'ts_unitname': QueryOption(True, True),
+                'timeseriesgroup_id': QueryOption(False, False),
+                'fulltext': QueryOption(True, False),
+            },
+            [
+                'station_no',
+                'station_id',
+                'station_name',
+                'station_latitude',
+                'station_longitude',
+                'station_carteasting',
+                'station_cartnorthing',
+                'station_georefsystem',
+                'station_longname',
+                'ts_id',
+                'ts_name',
+                'ts_shortname',
+                'ts_pat',
+                'parametertype_id',
+                'parametertype_name',
+                'stationparameter_name',
+                'stationparameter_longname',
+                'ts_unitname',
+                'ts_unitsymbol',
+                'ts_unitname_abs',
+                'ts_unitsymbol_abs',
+                'coverage',
+                'ts_density',
+                'datacart',
+            ]
+        )
+
+        gen_kiwis_method(
+            self.__class__,
             'getStationList',
             {
                 'station_no': QueryOption(True, True),
@@ -78,7 +126,7 @@ def gen_kiwis_method(cls, method_name, available_query_options, available_return
 
         params = self.default_args.copy()
         params.update(kwargs)
-        params['request'] = 'getStationList'
+        params['request'] = method_name
         if return_fields is not None:
             params['returnfields'] = ','.join(return_fields)
         r = requests.get(self.server_url, params = params)
