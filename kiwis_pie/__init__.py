@@ -154,9 +154,10 @@ def gen_kiwis_method(cls, method_name, available_query_options, available_return
             if available_query_options[query_key].parser is not None:
                 kwargs[query_key] = available_query_options[query_key].parser(kwargs[query_key])
 
-        for return_key in return_fields:
-            if return_key not in available_return_fields:
-                raise ValueError(return_key)
+        if return_fields is not None:
+            for return_key in return_fields:
+                if return_key not in available_return_fields:
+                    raise ValueError(return_key)
 
         params = self.default_args.copy()
         params.update(kwargs)
