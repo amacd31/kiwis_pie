@@ -9,6 +9,9 @@ from tabulate import tabulate
 import logging
 logger = logging.getLogger(__name__)
 
+class KIWISError(Exception):
+    pass
+
 class KIWIS(object):
     def __init__(self, server_url):
         self.server_url = server_url
@@ -198,6 +201,14 @@ def gen_kiwis_method(cls, method_name, available_query_options, available_return
         logger.debug(r.url)
 
         json_data = r.json()
+        if 'type' in json_data.keys() and json_data['type'] == 'error':
+            raise KIWISError(
+                'KIWIS returned an error:\n\tCode: {0}\n\tMessage: "{1}"'.format(
+                    json_data['code'],
+                    json_data['message']
+                )
+            )
+
         if method_name in ['getSiteList', 'getStationList', 'getTimeseriesList']:
             return pd.DataFrame(json_data[1:], columns = json_data[0])
         elif method_name in ['getTimeseriesValues']:
