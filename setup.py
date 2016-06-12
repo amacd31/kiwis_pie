@@ -22,10 +22,8 @@ setup(
     license='BSD',
     url='https://github.com/amacd31/kiwis_pie',
     install_requires= [
-        'numpy',
         'pandas',
-        'beautifulsoup4',
-        'lxml',
+        'requests',
     ],
     packages = ['kiwis_pie'],
     test_suite = 'nose.collector',
