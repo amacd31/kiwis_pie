@@ -140,6 +140,36 @@ class KIWIS(object):
             ]
         )
 
+        gen_kiwis_method(
+            self.__class__,
+            'getSiteList',
+            {
+                'site_no': QueryOption(False, True, None),
+                'site_id': QueryOption(False, True, None),
+                'site_name': QueryOption(False, True, None),
+                'parametertype_id': QueryOption(False, True, None),
+                'parametertype_name': QueryOption(True, True, None),
+                'stationparameter_name': QueryOption(True, True, None),
+                'bbox': QueryOption(None, None, None),
+            },
+            [
+                'site_no',
+                'site_id',
+                'site_name',
+                'site_latitude',
+                'site_longitude',
+                'site_carteasting',
+                'site_cartnorthing',
+                'site_type_name',
+                'site_type_shortname',
+                'parametertype_id',
+                'parametertype_name',
+                'stationparameter_name',
+                'site_georefsystem',
+                'custom_attributes',
+            ]
+        )
+
 def gen_kiwis_method(cls, method_name, available_query_options, available_return_fields):
 
     start_snake = re.sub('(.)([A-Z][a-z]+)', r'\1_\2', method_name)
@@ -168,7 +198,7 @@ def gen_kiwis_method(cls, method_name, available_query_options, available_return
         logger.debug(r.url)
 
         json_data = r.json()
-        if method_name in ['getStationList', 'getTimeseriesList']:
+        if method_name in ['getSiteList', 'getStationList', 'getTimeseriesList']:
             return pd.DataFrame(json_data[1:], columns = json_data[0])
         elif method_name in ['getTimeseriesValues']:
             return pd.DataFrame(json_data[0]['data'], columns = json_data[0]['columns'].split(','))
