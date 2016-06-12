@@ -201,7 +201,11 @@ def gen_kiwis_method(cls, method_name, available_query_options, available_return
         if method_name in ['getSiteList', 'getStationList', 'getTimeseriesList']:
             return pd.DataFrame(json_data[1:], columns = json_data[0])
         elif method_name in ['getTimeseriesValues']:
-            return pd.DataFrame(json_data[0]['data'], columns = json_data[0]['columns'].split(','))
+            df = pd.DataFrame(json_data[0]['data'], columns = json_data[0]['columns'].split(','))
+            if 'Timestamp' in df.columns:
+                df.set_index('Timestamp', inplace = True)
+                df.index = pd.to_datetime(df.index)
+            return df
         else:
             raise NotImplementedError("Method '{0}' has no return implemented.".format(method_name))
 
