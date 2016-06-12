@@ -67,6 +67,35 @@ class KIWIS(object):
 
         gen_kiwis_method(
             self.__class__,
+            'getTimeseriesValues',
+            {
+                'ts_id': QueryOption(False, True),
+                'timeseriesgroup_id': QueryOption(False, True),
+                'ts_path': QueryOption(True, True),
+                'from': QueryOption(None, None),
+                'to': QueryOption(None, None),
+                'period': QueryOption(None, None),
+            },
+            [
+                'Timestamp',
+                'Value',
+                'Interpolation Type',
+                'Quality Code',
+                'Aggregation',
+                'Accuracy',
+                'Absolute Value',
+                'AV Interpolation',
+                'Type',
+                'AV Quality Code',
+                'Runoff Value',
+                'RV Interpolation',
+                'Type',
+                'RV Quality Code',
+            ]
+        )
+
+        gen_kiwis_method(
+            self.__class__,
             'getStationList',
             {
                 'station_no': QueryOption(True, True),
@@ -130,8 +159,14 @@ def gen_kiwis_method(cls, method_name, available_query_options, available_return
         if return_fields is not None:
             params['returnfields'] = ','.join(return_fields)
         r = requests.get(self.server_url, params = params)
+        logger.debug(r.url)
 
         json_data = r.json()
-        return pd.DataFrame(json_data[1:], columns = json_data[0])
+        if method_name in ['getStationList', 'getTimeseriesList']:
+            return pd.DataFrame(json_data[1:], columns = json_data[0])
+        elif method_name in ['getTimeseriesValues']:
+            return pd.DataFrame(json_data[0]['data'], columns = json_data[0]['columns'].split(','))
+        else:
+            raise NotImplementedError("Method '{0}' has no return implemented.".format(method_name))
 
     setattr(cls, snake_name, kiwis_method)
