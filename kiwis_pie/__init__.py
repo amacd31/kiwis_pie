@@ -201,7 +201,7 @@ def gen_kiwis_method(cls, method_name, available_query_options, available_return
         logger.debug(r.url)
 
         json_data = r.json()
-        if 'type' in json_data.keys() and json_data['type'] == 'error':
+        if type(json_data) is dict and 'type' in json_data.keys() and json_data['type'] == 'error':
             raise KIWISError(
                 'KIWIS returned an error:\n\tCode: {0}\n\tMessage: "{1}"'.format(
                     json_data['code'],
