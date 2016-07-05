@@ -243,6 +243,6 @@ def gen_kiwis_method(cls, method_name, available_query_options, available_return
 
     docstring['query_option_table'] = tabulate(option_list, headers = 'firstrow')
 
-    kiwis_method.func_doc = "{doc_intro}\n\n{query_option_table}\n\n{return_fields}".format(**docstring)
+    kiwis_method.__doc__ = "{doc_intro}\n\n{query_option_table}\n\n{return_fields}".format(**docstring)
 
     setattr(cls, snake_name, kiwis_method)
