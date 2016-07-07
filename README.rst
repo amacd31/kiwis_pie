@@ -1,6 +1,6 @@
 Kiwis Pie
 ===============
-Python library for querying WISKI via KiWIS (KISTERS Web Interoperability Solution). See: http://www.kisters.net/wiski-modules.html
+Python library for querying WISKI via KiWIS (KISTERS Web Interoperability Solution). See: http://www.kisters.net/NA/products/wiski/options/web-services/
 
 .. image:: https://raw.githubusercontent.com/amacd31/kiwis_pie/master/kiwis_and_pie.jpg
 
