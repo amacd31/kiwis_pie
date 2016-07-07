@@ -1,5 +1,5 @@
-from collections import namedtuple
-QueryOption = namedtuple('QueryOption', ['wildcard', 'list', 'parser'])
+import collections
+QueryOption = collections.namedtuple('QueryOption', ['wildcard', 'list', 'parser'])
 
 import pandas as pd
 import re
@@ -8,6 +8,11 @@ from tabulate import tabulate
 
 import logging
 logger = logging.getLogger(__name__)
+
+try:
+    basestring
+except NameError:
+    basestring = str
 
 class KIWISError(Exception):
     pass
@@ -183,6 +188,11 @@ def gen_kiwis_method(cls, method_name, available_query_options, available_return
         for query_key in kwargs.keys():
             if query_key not in available_query_options.keys():
                 raise ValueError(query_key)
+
+            if (available_query_options[query_key].list and
+                    isinstance(kwargs[query_key], collections.Iterable) and
+                    not isinstance(kwargs[query_key], basestring)):
+                kwargs[query_key] = ','.join(kwargs[query_key])
 
             if available_query_options[query_key].parser is not None:
                 kwargs[query_key] = available_query_options[query_key].parser(kwargs[query_key])
