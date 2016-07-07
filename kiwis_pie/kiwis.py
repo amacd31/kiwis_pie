@@ -17,6 +17,9 @@ except NameError:
 class KIWISError(Exception):
     pass
 
+class NoDataError(Exception):
+    pass
+
 class KIWIS(object):
     def __init__(self, server_url):
         self.server_url = server_url
@@ -218,6 +221,9 @@ def gen_kiwis_method(cls, method_name, available_query_options, available_return
                     json_data['message']
                 )
             )
+
+        if json_data is None or json_data[0] == "No matches.":
+            raise NoDataError()
 
         if method_name in ['getSiteList', 'getStationList', 'getTimeseriesList']:
             return pd.DataFrame(json_data[1:], columns = json_data[0])
