@@ -18,8 +18,6 @@ Example fetching some data from the KiWIS service that backs: http://kna.kisters
  from kiwis_pie import KIWIS
  k = KIWIS('http://kna.kisters.net/grassland/KiWIS')
 
- k.get_station_list()
-
  # Get station ID for 'SAN JOAQUIN RIVER NEAR PATTERSON'
  station_id = k.get_station_list(station_name = 'SAN JOAQUIN RIVER NEAR PATTERSON').station_id.values[0]
 
