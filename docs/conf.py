@@ -17,6 +17,16 @@ import sys
 import os
 import shlex
 import sphinx_rtd_theme
+import mock
+
+MOCK_MODULES = [
+    'requests',
+    'pandas',
+    'tabulate',
+]
+
+for mod_name in MOCK_MODULES:
+    sys.modules[mod_name] = mock.Mock()
 
 os.system("sphinx-apidoc -T -f -o ./api ../kiwis_pie")
 
