@@ -15,3 +15,5 @@ MANIFEST
 build/
 dist/
 setuptest/
+docs/_build/
+docs/api/
