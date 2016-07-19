@@ -90,7 +90,7 @@ def __gen_kiwis_method(cls, method_name, available_query_options, available_retu
     docstring = {}
     docstring['doc_intro'] = "Python method to query the '{0}' KiWIS method.".format(snake_name)
 
-    docstring['return_fields'] = "Takes the return_fields keyword argument, which is a list made up from the following available fields:\n\t{0}.".format(',\n\t'.join(available_return_fields))
+    docstring['return_fields'] = "Takes the return_fields keyword argument, which is a list made up from the following available fields:\n * {0}.".format(',\n * '.join(available_return_fields))
 
     doc_map = {
         True: 'yes',
