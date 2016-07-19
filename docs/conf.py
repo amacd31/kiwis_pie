@@ -22,7 +22,6 @@ import mock
 MOCK_MODULES = [
     'requests',
     'pandas',
-    'tabulate',
 ]
 
 for mod_name in MOCK_MODULES:
