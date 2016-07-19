@@ -88,7 +88,7 @@ def __gen_kiwis_method(cls, method_name, available_query_options, available_retu
             raise NotImplementedError("Method '{0}' has no return implemented.".format(method_name))
 
     docstring = {}
-    docstring['doc_intro'] = "Python method to query the '{0}' KiWIS method.".format(snake_name)
+    docstring['doc_intro'] = "Python method to query the '{0}' KiWIS method.".format(method_name)
 
     docstring['return_fields'] = "Takes the return_fields keyword argument, which is a list made up from the following available fields:\n * {0}.".format(',\n * '.join(available_return_fields))
 
