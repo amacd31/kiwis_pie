@@ -98,7 +98,7 @@ def __gen_kiwis_method(cls, method_name, available_query_options, available_retu
         None: 'n/a',
     }
 
-    option_list = [['Queryfield name', '* as wildcard', 'accepts list']]
+    option_list = [['Queryfield name', '\* as wildcard', 'accepts list']]
     for option_name, option_details in available_query_options.items():
         option_list.append(
             [
@@ -108,7 +108,7 @@ def __gen_kiwis_method(cls, method_name, available_query_options, available_retu
             ]
         )
 
-    docstring['query_option_table'] = tabulate(option_list, headers = 'firstrow')
+    docstring['query_option_table'] = tabulate(option_list, headers = 'firstrow', tablefmt = 'rst')
 
     kiwis_method.__doc__ = "{doc_intro}\n\n{query_option_table}\n\n{return_fields}".format(**docstring)
 
