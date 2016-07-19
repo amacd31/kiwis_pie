@@ -1,1 +1,1 @@
-from kiwis_pie.kiwis import KIWIS, KIWISError
+from kiwis_pie.kiwis import KIWIS, KIWISError, NoDataError
