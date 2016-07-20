@@ -15,12 +15,25 @@ except NameError:
     basestring = str
 
 class KIWISError(Exception):
+    """
+        Exception for when the KiWIS service responds with an error.
+    """
     pass
 
 class NoDataError(Exception):
+    """
+        Exception for when there was no data returned by the KiWIS service.
+    """
     pass
 
 class KIWIS(object):
+    """
+        Provides access to the KiWIS API at a specified end point.
+
+        :param server_url: The URL to the KiWIS server.
+        :type server_url: string
+    """
+
     def __init__(self, server_url):
         self.server_url = server_url
         self.__default_args = {
@@ -90,7 +103,10 @@ def __gen_kiwis_method(cls, method_name, available_query_options, available_retu
     docstring = {}
     docstring['doc_intro'] = "Python method to query the '{0}' KiWIS method.".format(method_name)
 
-    docstring['return_fields'] = "Takes the return_fields keyword argument, which is a list made up from the following available fields:\n * {0}.".format(',\n * '.join(available_return_fields))
+    docstring['doc_intro'] += "\n\nKeyword arguments are those available in the 'Query field' name list below. "
+    docstring['doc_intro'] += "That is the keywords match the Queryfield names used by KiWIS."
+
+    docstring['return_fields'] = ":type return_fields: list(string)\n:param return_fields: Optional keyword argument, which is a list made up from the following available fields:\n\n * {0}.".format(',\n * '.join(available_return_fields))
 
     doc_map = {
         True: 'yes',
@@ -108,9 +124,10 @@ def __gen_kiwis_method(cls, method_name, available_query_options, available_retu
             ]
         )
 
-    docstring['query_option_table'] = tabulate(option_list, headers = 'firstrow', tablefmt = 'rst')
+    docstring['query_option_table'] = ":param kwargs: Queryfield name for keyword argument. Refer to table:\n\n"
+    docstring['query_option_table'] += tabulate(option_list, headers = 'firstrow', tablefmt = 'rst')
 
-    kiwis_method.__doc__ = "{doc_intro}\n\n{query_option_table}\n\n{return_fields}".format(**docstring)
+    kiwis_method.__doc__ = "{doc_intro}\n\n{return_fields}\n\n{query_option_table}".format(**docstring)
 
     setattr(cls, snake_name, kiwis_method)
 
