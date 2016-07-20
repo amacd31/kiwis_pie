@@ -127,7 +127,10 @@ def __gen_kiwis_method(cls, method_name, available_query_options, available_retu
     docstring['query_option_table'] = ":param kwargs: Queryfield name for keyword argument. Refer to table:\n\n"
     docstring['query_option_table'] += tabulate(option_list, headers = 'firstrow', tablefmt = 'rst')
 
-    kiwis_method.__doc__ = "{doc_intro}\n\n{return_fields}\n\n{query_option_table}".format(**docstring)
+    docstring['returns'] = ":return: Pandas DataFrame with columns based on the default return from KiWIS or based on the return_fields specified.\n"
+    docstring['returns'] += ":rtype: pandas.DataFrame"
+
+    kiwis_method.__doc__ = "{doc_intro}\n\n{return_fields}\n\n{query_option_table}\n\n{returns}".format(**docstring)
 
     setattr(cls, snake_name, kiwis_method)
 
