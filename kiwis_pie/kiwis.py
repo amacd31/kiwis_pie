@@ -89,7 +89,7 @@ def __gen_kiwis_method(cls, method_name, available_query_options, available_retu
         if json_data is None or json_data[0] == "No matches.":
             raise NoDataError()
 
-        if method_name in ['getSiteList', 'getStationList', 'getTimeseriesList']:
+        if method_name in ['getParameterList', 'getSiteList', 'getStationList', 'getTimeseriesList']:
             return pd.DataFrame(json_data[1:], columns = json_data[0])
         elif method_name in ['getTimeseriesValues']:
             df = pd.DataFrame(json_data[0]['data'], columns = json_data[0]['columns'].split(','))
@@ -280,5 +280,42 @@ __gen_kiwis_method(
         'stationparameter_name',
         'site_georefsystem',
         'custom_attributes',
+    ]
+)
+
+__gen_kiwis_method(
+    KIWIS,
+    'getParameterList',
+    {
+        'station_no': QueryOption(False, True, None),
+        'station_id': QueryOption(False, True, None),
+        'station_name': QueryOption(True, True, None),
+        'site_False': QueryOption(False, True, None),
+        'site_id': QueryOption(False, True, None),
+        'site_name': QueryOption(True, True, None),
+        'stationparameter_id': QueryOption(False, True, None),
+        'stationparameter_name': QueryOption(True, True, None),
+        'stationparameter_no': QueryOption(False, True, None),
+        'stationparameter_longname': QueryOption(True, True, None),
+        'parametertype_id': QueryOption(False, True, None),
+        'parametertype_name': QueryOption(True, True, None),
+        'parametertype_longname': QueryOption(True, True, None),
+    },
+    [
+        'station_no',
+        'station_id',
+        'station_name',
+        'site_no',
+        'site_id',
+        'site_name',
+        'stationparameter_id',
+        'stationparameter_name',
+        'stationparameter_no',
+        'stationparameter_longname',
+        'parametertype_id',
+        'parametertype_name',
+        'parametertype_longname',
+        'parametertype_shortunitname',
+        'parametertype_unitname',
     ]
 )
