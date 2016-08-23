@@ -69,7 +69,7 @@ def __gen_kiwis_method(cls, method_name, available_query_options, available_retu
                 if return_key not in available_return_fields:
                     raise ValueError(return_key)
 
-        params = self.__default_args.copy()
+        params = self._KIWIS__default_args.copy()
         params.update(kwargs)
         params['request'] = method_name
         if return_fields is not None:
