@@ -8,6 +8,14 @@ Dependencies
 ------------
 Requires the Python libraries requests, pandas and tabulate.
 
+Installation
+------------
+Install directly from github:
+
+::
+
+ pip install git+https://github.com/amacd31/kiwis_pie.git
+
 Usage
 -----
 Example fetching some data from the KiWIS service that backs: http://kna.kisters.net/sjr/kiwidgets/tests/SanJoaquinRiver/
@@ -26,3 +34,8 @@ Example fetching some data from the KiWIS service that backs: http://kna.kisters
 
  # Read one day of 3-Hourly flow data for SAN JOAQUIN RIVER NEAR PATTERSON
  k.get_timeseries_values(ts_id = ts_id, to = date(2016,1,1), **{'from': date(2016,1,1)})
+
+Documentation
+-------------
+The methods on the KIWIS class all have docstrings detailing the keyword arguments they take.
+Rendered documentation is available on Read the Docs: http://kiwis-pie.readthedocs.io/en/latest/
