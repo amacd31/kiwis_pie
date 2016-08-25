@@ -1,0 +1,4 @@
+Test data prefixed with 'bom_' sourced from 'http://www.bom.gov.au/waterdata/services' KiWIS requests.
+The .request files are direct responses from the server and the .csv files is the result after processing the request by kiwis_pie.
+Most of the data available via the KiWIS service provided by the Bureau of Meterology is licensed Creative Commons by Attribution: https://creativecommons.org/licenses/by/3.0/au/
+The test data provided here have been selected to be related to creative commons licensed data. Mostly using the station 410730 which is owned by 'Icon Water Limited' who specify 'no attribution required' (see: http://www.bom.gov.au/waterdata/#copyright).
