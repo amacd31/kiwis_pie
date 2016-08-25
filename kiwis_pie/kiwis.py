@@ -89,7 +89,13 @@ def __gen_kiwis_method(cls, method_name, available_query_options, available_retu
         if json_data is None or json_data[0] == "No matches.":
             raise NoDataError()
 
-        if method_name in ['getParameterList', 'getSiteList', 'getStationList', 'getTimeseriesList']:
+        if method_name in [
+                'getParameterList',
+                'getParameterTypeList',
+                'getSiteList',
+                'getStationList',
+                'getTimeseriesList'
+            ]:
             return pd.DataFrame(json_data[1:], columns = json_data[0])
         elif method_name in ['getTimeseriesValues']:
             df = pd.DataFrame(json_data[0]['data'], columns = json_data[0]['columns'].split(','))
@@ -317,5 +323,16 @@ __gen_kiwis_method(
         'parametertype_longname',
         'parametertype_shortunitname',
         'parametertype_unitname',
+    ]
+)
+
+__gen_kiwis_method(
+    KIWIS,
+    'getParameterTypeList',
+    {
+        'parametertype_id': QueryOption(False, True, None),
+        'parametertype_name': QueryOption(True, True, None),
+    },
+    [
     ]
 )
