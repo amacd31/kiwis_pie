@@ -35,6 +35,22 @@ Example fetching some data from the KiWIS service that backs: http://kna.kisters
  # Read one day of 3-Hourly flow data for SAN JOAQUIN RIVER NEAR PATTERSON
  k.get_timeseries_values(ts_id = ts_id, to = date(2016,1,1), **{'from': date(2016,1,1)})
 
+Example using the KiWIS service that backs the Australian Bureau of Meteorology's Water Data Online service: http://www.bom.gov.au/waterdata/
+
+::
+
+ from datetime import date
+ from kiwis_pie import KIWIS
+
+ # Get station ID for 'Cotter River at Gingera'
+ station_id = k.get_station_list(station_name = 'Cotter R. at Gingera').station_id.values[0]
+
+ # Get timeseries ID for daily mean streamflow (Q) at Cotter River at Gingera
+ ts_id = k.get_timeseries_list(station_id = station_id, ts_name = 'DMQaQc.Merged.DailyMean.24HR', parametertype_name = 'Water Course Discharge').ts_id.values[0]
+
+ # Read 31 days of daily water course discharge data for Cotter River at Gingera
+ k.get_timeseries_values(ts_id = ts_id, to = date(2016,1,31), **{'from': date(2016,1,1)})
+
 Documentation
 -------------
 The methods on the KIWIS class all have docstrings detailing the keyword arguments they take.
