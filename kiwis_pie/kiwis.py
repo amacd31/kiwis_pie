@@ -43,7 +43,7 @@ class KIWIS(object):
         }
 
 def __parse_date(input_dt):
-    return pd.datetools.to_datetime(input_dt).strftime('%Y-%m-%d')
+    return pd.to_datetime(input_dt).strftime('%Y-%m-%d')
 
 def __gen_kiwis_method(cls, method_name, available_query_options, available_return_fields):
 
