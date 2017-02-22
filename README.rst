@@ -41,6 +41,7 @@ Example using the KiWIS service that backs the Australian Bureau of Meteorology'
 
  from datetime import date
  from kiwis_pie import KIWIS
+ k = KIWIS('http://www.bom.gov.au/waterdata/service')
 
  # Get station ID for 'Cotter River at Gingera'
  station_id = k.get_station_list(station_name = 'Cotter R. at Gingera').station_id.values[0]
