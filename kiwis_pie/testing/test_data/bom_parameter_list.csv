@@ -1,0 +1,8 @@
+,station_name,station_no,station_id,parametertype_id,parametertype_name,stationparameter_name
+0,Cotter R. at Gingera,410730,13360,11707,Electrical Conductivity @ 25C,ElectricalConductivityAt25C
+1,Cotter R. at Gingera,410730,13360,11748,Turbidity,Turbidity
+2,Cotter R. at Gingera,410730,13360,11765,Water Temperature,WaterTemperature
+3,Cotter R. at Gingera,410730,13360,11764,pH,WaterpH
+4,Cotter R. at Gingera,410730,13360,11731,Rainfall,Rainfall
+5,Cotter R. at Gingera,410730,13360,11762,Water Course Discharge,WaterCourseDischarge
+6,Cotter R. at Gingera,410730,13360,11763,Water Course Level,WaterCourseLevel
