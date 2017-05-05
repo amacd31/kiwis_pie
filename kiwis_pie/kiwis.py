@@ -74,9 +74,13 @@ def __gen_kiwis_method(cls, method_name, available_query_options, available_retu
         params['request'] = method_name
         if return_fields is not None:
             params['returnfields'] = ','.join(return_fields)
+        
+        
         r = requests.get(self.server_url, params = params)
         logger.debug(r.url)
-
+        logger.debug(r.status_code)
+        r.raise_for_status() #raise error if service returns an error, i.e. 404, 500 etc.
+        
         json_data = r.json()
         if type(json_data) is dict and 'type' in json_data.keys() and json_data['type'] == 'error':
             raise KIWISError(

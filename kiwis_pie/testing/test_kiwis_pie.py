@@ -31,3 +31,4 @@ class KIWISTest(unittest.TestCase):
 
         df = self.k.get_parameter_list(station_no = '410730')
         expected.equals(df)
+
