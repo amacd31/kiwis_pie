@@ -26,6 +26,10 @@ setup(
         'requests',
         'tabulate',
     ],
+    tests_requires = [
+        'requests_mock',
+        'nose',
+    ],
     packages = ['kiwis_pie'],
     test_suite = 'nose.collector',
     classifiers=[
