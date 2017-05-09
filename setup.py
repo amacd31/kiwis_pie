@@ -12,7 +12,7 @@ with open(os.path.join(here, 'README.rst'), encoding='utf-8') as f:
         ])
 
 setup(
-    name='kiwis_pie',
+    name='kiwis-pie',
     version=versioneer.get_version(),
     cmdclass=versioneer.get_cmdclass(),
     description='Python library for accessing a Kisters WISKI system via the KiWIS API.',
