@@ -2,6 +2,7 @@ import collections
 QueryOption = collections.namedtuple('QueryOption', ['wildcard', 'list', 'parser'])
 
 import pandas as pd
+import pytz
 import re
 import requests
 from tabulate import tabulate
@@ -50,7 +51,7 @@ def __gen_kiwis_method(cls, method_name, available_query_options, available_retu
     start_snake = re.sub('(.)([A-Z][a-z]+)', r'\1_\2', method_name)
     snake_name = re.sub('([a-z0-9])([A-Z])', r'\1_\2', start_snake).lower()
 
-    def kiwis_method(self, return_fields = None, **kwargs):
+    def kiwis_method(self, return_fields = None, keep_tz=False, **kwargs):
 
         for query_key in kwargs.keys():
             if query_key not in available_query_options.keys():
@@ -105,7 +106,12 @@ def __gen_kiwis_method(cls, method_name, available_query_options, available_retu
             df = pd.DataFrame(json_data[0]['data'], columns = json_data[0]['columns'].split(','))
             if 'Timestamp' in df.columns:
                 df.set_index('Timestamp', inplace = True)
-                df.index = pd.to_datetime(df.index)
+                if keep_tz:
+                    hour_offset, minute_offset = map(int, df.index[0].split('+')[1].split(':'))
+                    logger.debug('Using timezone offset %d hour(s) and %d minute(s)', hour_offset, minute_offset)
+                    df.index = pd.to_datetime(df.index).tz_localize('UTC').tz_convert(pytz.FixedOffset(hour_offset*60+minute_offset))
+                else:
+                    df.index = pd.to_datetime(df.index)
             return df
         else:
             raise NotImplementedError("Method '{0}' has no return implemented.".format(method_name))
@@ -115,6 +121,11 @@ def __gen_kiwis_method(cls, method_name, available_query_options, available_retu
 
     docstring['doc_intro'] += "\n\nKeyword arguments are those available in the 'Query field' name list below. "
     docstring['doc_intro'] += "That is the keywords match the Queryfield names used by KiWIS."
+
+    docstring['doc_intro'] += "\n\n:param keep_tz: "
+    docstring['doc_intro'] += "Set to true to prevent the series datetimes from being converted to UTC."
+    docstring['doc_intro'] += " This optional argument only applies when the returned data includes data with timestamps."
+    docstring['doc_intro'] += "\n:type keep_tz: boolean"
 
     docstring['return_fields'] = ":type return_fields: list(string)\n:param return_fields: Optional keyword argument, which is a list made up from the following available fields:\n\n * {0}.".format(',\n * '.join(available_return_fields))
 

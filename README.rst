@@ -52,6 +52,9 @@ Example using the KiWIS service that backs the Australian Bureau of Meteorology'
  # Read 31 days of daily water course discharge data for Cotter River at Gingera
  k.get_timeseries_values(ts_id = ts_id, to = date(2016,1,31), **{'from': date(2016,1,1)})
 
+ # Optionally use the `keep_tz` option to return in local timezone instead of UTC
+ k.get_timeseries_values(ts_id = ts_id, to = date(2016,1,31), **{'from': date(2016,1,1)}, keep_tz=True)
+
 Documentation
 -------------
 The methods on the KIWIS class all have docstrings detailing the keyword arguments they take.
