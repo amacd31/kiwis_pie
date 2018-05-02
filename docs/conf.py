@@ -20,7 +20,6 @@ import sphinx_rtd_theme
 import mock
 
 MOCK_MODULES = [
-    'requests',
     'pandas',
 ]
 
