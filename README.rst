@@ -10,7 +10,14 @@ Requires the Python libraries requests, pandas and tabulate.
 
 Installation
 ------------
-Install directly from github:
+
+Install from PyPI:
+
+::
+
+ pip install kiwis-pie
+
+or install directly from github:
 
 ::
 
