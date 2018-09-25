@@ -35,6 +35,9 @@ class KIWIS(object):
         :type server_url: string
     """
 
+    __method_args = {}
+    __return_args = {}
+
     def __init__(self, server_url):
         self.server_url = server_url
         self.__default_args = {
@@ -51,23 +54,25 @@ def __gen_kiwis_method(cls, method_name, available_query_options, available_retu
     start_snake = re.sub('(.)([A-Z][a-z]+)', r'\1_\2', method_name)
     snake_name = re.sub('([a-z0-9])([A-Z])', r'\1_\2', start_snake).lower()
 
+    cls._KIWIS__method_args[method_name] = available_query_options
+    cls._KIWIS__return_args[method_name] = available_return_fields
     def kiwis_method(self, return_fields = None, keep_tz=False, **kwargs):
 
         for query_key in kwargs.keys():
-            if query_key not in available_query_options.keys():
+            if query_key not in self._KIWIS__method_args[method_name].keys():
                 raise ValueError(query_key)
 
-            if (available_query_options[query_key].list and
+            if (self._KIWIS__method_args[method_name][query_key].list and
                     isinstance(kwargs[query_key], collections.Iterable) and
                     not isinstance(kwargs[query_key], basestring)):
                 kwargs[query_key] = ','.join(kwargs[query_key])
 
-            if available_query_options[query_key].parser is not None:
-                kwargs[query_key] = available_query_options[query_key].parser(kwargs[query_key])
+            if self._KIWIS__method_args[method_name][query_key].parser is not None:
+                kwargs[query_key] = self._KIWIS__method_args[method_name][query_key].parser(kwargs[query_key])
 
         if return_fields is not None:
             for return_key in return_fields:
-                if return_key not in available_return_fields:
+                if return_key not in self._KIWIS__return_args[method_name]:
                     raise ValueError(return_key)
 
         params = self._KIWIS__default_args.copy()
