@@ -36,7 +36,7 @@ class KIWIS(object):
         :param strict_mode: Perform validation on query options passed as
             kwargs and the return_fields list if True. Otherwise pass
             through to the KiWIS API which may result in a 500 error if the
-            query option/return field isn't valid.
+            query option/return field isn't valid. Default: True
         :type strict_mode: boolean
     """
 
