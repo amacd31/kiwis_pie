@@ -213,6 +213,7 @@ __gen_kiwis_method(
         'from': QueryOption(None, None, __parse_date),
         'to': QueryOption(None, None, __parse_date),
         'period': QueryOption(None, None, None),
+        'timezone': QueryOption(False, None, None),
     },
     [
         'Timestamp',
