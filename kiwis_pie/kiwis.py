@@ -33,18 +33,25 @@ class KIWIS(object):
 
         :param server_url: The URL to the KiWIS server.
         :type server_url: string
+        :param strict_mode: Perform validation on query options passed as
+            kwargs and the return_fields list if True. Otherwise pass
+            through to the KiWIS API which may result in a 500 error if the
+            query option/return field isn't valid.
+        :type strict_mode: boolean
     """
 
     __method_args = {}
     __return_args = {}
 
-    def __init__(self, server_url):
+    def __init__(self, server_url, strict_mode=True):
         self.server_url = server_url
         self.__default_args = {
             'service': 'kisters',
             'type': 'QueryServices',
             'format': 'json',
         }
+
+        self.strict_mode = strict_mode
 
 def __parse_date(input_dt):
     return pd.to_datetime(input_dt).strftime('%Y-%m-%d')
@@ -58,22 +65,23 @@ def __gen_kiwis_method(cls, method_name, available_query_options, available_retu
     cls._KIWIS__return_args[method_name] = available_return_fields
     def kiwis_method(self, return_fields = None, keep_tz=False, **kwargs):
 
-        for query_key in kwargs.keys():
-            if query_key not in self._KIWIS__method_args[method_name].keys():
-                raise ValueError(query_key)
+        if self.strict_mode:
+            for query_key in kwargs.keys():
+                if query_key not in self._KIWIS__method_args[method_name].keys():
+                    raise ValueError(query_key)
 
-            if (self._KIWIS__method_args[method_name][query_key].list and
-                    isinstance(kwargs[query_key], collections.Iterable) and
-                    not isinstance(kwargs[query_key], basestring)):
-                kwargs[query_key] = ','.join(kwargs[query_key])
+                if (self._KIWIS__method_args[method_name][query_key].list and
+                        isinstance(kwargs[query_key], collections.Iterable) and
+                        not isinstance(kwargs[query_key], basestring)):
+                    kwargs[query_key] = ','.join(kwargs[query_key])
 
-            if self._KIWIS__method_args[method_name][query_key].parser is not None:
-                kwargs[query_key] = self._KIWIS__method_args[method_name][query_key].parser(kwargs[query_key])
+                if self._KIWIS__method_args[method_name][query_key].parser is not None:
+                    kwargs[query_key] = self._KIWIS__method_args[method_name][query_key].parser(kwargs[query_key])
 
-        if return_fields is not None:
-            for return_key in return_fields:
-                if return_key not in self._KIWIS__return_args[method_name]:
-                    raise ValueError(return_key)
+            if return_fields is not None:
+                for return_key in return_fields:
+                    if return_key not in self._KIWIS__return_args[method_name]:
+                        raise ValueError(return_key)
 
         params = self._KIWIS__default_args.copy()
         params.update(kwargs)
