@@ -1,4 +1,9 @@
 import collections
+try:
+    from collections.abc import Iterable
+except ImportError:
+    from collections import Iterable
+
 QueryOption = collections.namedtuple('QueryOption', ['wildcard', 'list', 'parser'])
 
 import pandas as pd
@@ -71,7 +76,7 @@ def __gen_kiwis_method(cls, method_name, available_query_options, available_retu
                     raise ValueError(query_key)
 
                 if (self._KIWIS__method_args[method_name][query_key].list and
-                        isinstance(kwargs[query_key], collections.Iterable) and
+                        isinstance(kwargs[query_key], Iterable) and
                         not isinstance(kwargs[query_key], basestring)):
                     kwargs[query_key] = ','.join(kwargs[query_key])
 
