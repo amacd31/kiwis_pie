@@ -268,6 +268,7 @@ __gen_kiwis_method(
         'parametertype_id': QueryOption(False, True, None),
         'parametertype_name': QueryOption(True, True, None),
         'stationparameter_name': QueryOption(True, True, None),
+        'bbox': QueryOption(None, None, None),
     },
     [
         'station_no',
