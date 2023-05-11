@@ -68,7 +68,7 @@ def __gen_kiwis_method(cls, method_name, available_query_options, available_retu
 
     cls._KIWIS__method_args[method_name] = available_query_options
     cls._KIWIS__return_args[method_name] = available_return_fields
-    def kiwis_method(self, return_fields = None, keep_tz=False, **kwargs):
+    def kiwis_method(self, return_fields = None, keep_tz=False, verify = True, **kwargs):
 
         if self.strict_mode:
             for query_key in kwargs.keys():
@@ -95,7 +95,7 @@ def __gen_kiwis_method(cls, method_name, available_query_options, available_retu
             params['returnfields'] = ','.join(return_fields)
 
 
-        r = requests.get(self.server_url, params = params)
+        r = requests.get(self.server_url, params = params, verify = verify)
         logger.debug(r.url)
         logger.debug(r.status_code)
         r.raise_for_status() #raise error if service returns an error, i.e. 404, 500 etc.
