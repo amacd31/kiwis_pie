@@ -43,12 +43,18 @@ class KIWIS(object):
             through to the KiWIS API which may result in a 500 error if the
             query option/return field isn't valid. Default: True
         :type strict_mode: boolean
+        :param verify_ssl: (optional) Passed through to
+            [requests](https://requests.readthedocs.io/en/latest/api/#requests.request).
+            Either a boolean, in which case it controls whether we verify the
+            server’s TLS certificate, or a string, in which case it must be a
+            path to a CA bundle to use. Defaults to True.
+        :type verify_ssl: boolean | str
     """
 
     __method_args = {}
     __return_args = {}
 
-    def __init__(self, server_url, strict_mode=True):
+    def __init__(self, server_url, strict_mode=True, verify_ssl=True):
         self.server_url = server_url
         self.__default_args = {
             'service': 'kisters',
@@ -57,6 +63,7 @@ class KIWIS(object):
         }
 
         self.strict_mode = strict_mode
+        self.verify_ssl = verify_ssl
 
 def __parse_date(input_dt):
     return pd.to_datetime(input_dt).strftime('%Y-%m-%d')
@@ -68,7 +75,7 @@ def __gen_kiwis_method(cls, method_name, available_query_options, available_retu
 
     cls._KIWIS__method_args[method_name] = available_query_options
     cls._KIWIS__return_args[method_name] = available_return_fields
-    def kiwis_method(self, return_fields = None, keep_tz=False, **kwargs):
+    def kiwis_method(self, return_fields = None, keep_tz=False, verify = True, **kwargs):
 
         if self.strict_mode:
             for query_key in kwargs.keys():
@@ -95,7 +102,7 @@ def __gen_kiwis_method(cls, method_name, available_query_options, available_retu
             params['returnfields'] = ','.join(return_fields)
 
 
-        r = requests.get(self.server_url, params = params)
+        r = requests.get(self.server_url, params = params, verify = self.verify_ssl)
         logger.debug(r.url)
         logger.debug(r.status_code)
         r.raise_for_status() #raise error if service returns an error, i.e. 404, 500 etc.
