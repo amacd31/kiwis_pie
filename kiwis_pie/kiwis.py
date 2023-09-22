@@ -54,7 +54,7 @@ class KIWIS(object):
     __method_args = {}
     __return_args = {}
 
-    def __init__(self, server_url, strict_mode=True, verify_ssl=True):
+    def __init__(self, server_url, strict_mode=True, verify_ssl=True, headers=None):
         self.server_url = server_url
         self.__default_args = {
             'service': 'kisters',
@@ -64,6 +64,7 @@ class KIWIS(object):
 
         self.strict_mode = strict_mode
         self.verify_ssl = verify_ssl
+        self.headers = headers
 
 def __parse_date(input_dt):
     return pd.to_datetime(input_dt).strftime('%Y-%m-%d')
@@ -101,8 +102,7 @@ def __gen_kiwis_method(cls, method_name, available_query_options, available_retu
         if return_fields is not None:
             params['returnfields'] = ','.join(return_fields)
 
-
-        r = requests.get(self.server_url, params = params, verify = self.verify_ssl)
+        r = requests.get(self.server_url, params = params, verify = self.verify_ssl, headers=self.headers)
         logger.debug(r.url)
         logger.debug(r.status_code)
         r.raise_for_status() #raise error if service returns an error, i.e. 404, 500 etc.
