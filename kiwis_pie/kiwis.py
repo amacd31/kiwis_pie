@@ -49,6 +49,8 @@ class KIWIS(object):
             server’s TLS certificate, or a string, in which case it must be a
             path to a CA bundle to use. Defaults to True.
         :type verify_ssl: boolean | str
+        :param headers: HTTP headers to pass along with the `GET` request to the KiWIS server.
+        :type headers: dict[str, Any]
     """
 
     __method_args = {}
