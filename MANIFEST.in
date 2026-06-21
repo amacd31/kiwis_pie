@@ -1,2 +1,0 @@
-include versioneer.py
-include kiwis_pie/_version.py

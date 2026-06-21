@@ -1,0 +1,56 @@
+[project]
+name = "kiwis-pie"
+description = "Python library for accessing a Kisters WISKI system via the KiWIS API."
+readme = "README.rst"
+dynamic = ["version"]
+authors = [
+    { name = "Andrew MacDonald", email = "andrew@maccas.net" }
+]
+license = { text = "BSD-3-Clause" }
+requires-python = ">=3.10"
+dependencies = [
+    "pandas",
+    "requests",
+    "tabulate",
+    "pytz>=2026.2",
+]
+classifiers=[
+    'Development Status :: 3 - Alpha',
+    'Intended Audience :: Developers',
+    'Intended Audience :: Science/Research',
+    'Topic :: Software Development :: Build Tools',
+    'Topic :: Software Development :: Libraries :: Python Modules',
+    'Programming Language :: Python :: 3.10',
+    'Programming Language :: Python :: 3.11',
+    'Programming Language :: Python :: 3.12',
+    'Programming Language :: Python :: 3.13',
+    'Programming Language :: Python :: 3.14',
+]
+
+[project.optional-dependencies]
+docs = [
+    "sphinx_rtd_theme>=3.1.0",
+    "mock>=5.2.0",
+]
+test = [
+    "requests_mock",
+    "nose"
+]
+
+[build-system]
+requires = ["hatchling", "uv-dynamic-versioning"]
+build-backend = "hatchling.build"
+
+[tool.hatch.version]
+source = "uv-dynamic-versioning"
+
+[tool.hatch.build.targets.sdist]
+exclude = [
+  "/.github",
+  "/docs",
+]
+include = [
+  "/kiwis_pie",
+  "LICENSE",
+  "README.rst",
+]
