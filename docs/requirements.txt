@@ -1,0 +1,6 @@
+sphinx_rtd_theme==3.1.0
+mock==5.2.0
+pandas==3.0.3
+requests==2.34.2
+tabulate==0.10.0
+pytz==2026.2
