@@ -1,10 +1,10 @@
-import os
+import importlib.resources
+
 import pandas as pd
-import pkg_resources
 import unittest
 import requests_mock
 
-from io import BytesIO, StringIO
+from io import StringIO
 
 from kiwis_pie import KIWIS
 
@@ -15,7 +15,8 @@ class KIWISTest(unittest.TestCase):
 
     @requests_mock.mock()
     def test_get_parameter_list(self, m):
-        response = StringIO(BytesIO(pkg_resources.resource_string(__name__, 'test_data/bom_parameter_list.request')).read().decode('UTF-8')).read()
+        test_data = importlib.resources.files(__package__).joinpath("test_data")
+        response = test_data.joinpath("bom_parameter_list.request").read_bytes().decode('UTF-8')
 
         m.get(
             'http://www.bom.gov.au/waterdata/services?station_no=410730&type=QueryServices&service=kisters&format=json&request=getParameterList',
@@ -23,10 +24,7 @@ class KIWISTest(unittest.TestCase):
         )
 
         expected = pd.read_csv(
-            pkg_resources.resource_stream(
-                __name__,
-                'test_data/bom_parameter_list.csv'
-            )
+            StringIO(test_data.joinpath("bom_parameter_list.csv").read_text())
         )
 
         df = self.k.get_parameter_list(station_no = '410730')

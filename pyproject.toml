@@ -34,7 +34,7 @@ docs = [
 ]
 test = [
     "requests_mock",
-    "nose"
+    "pytest",
 ]
 
 [build-system]
