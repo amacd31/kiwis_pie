@@ -1,0 +1,20 @@
+{
+  "$schema": "https://raw.githubusercontent.com/jetify-com/devbox/0.17.3/.schema/devbox.schema.json",
+  "packages": [
+    "python@latest",
+    "uv@latest"
+  ],
+  "env": {
+    "VENV_DIR": "$PWD/.venv",
+    "PATH": "$VENV_DIR/bin:$PATH"
+  },
+  "shell": {
+    "init_hook": [
+    ],
+    "scripts": {
+      "test": [
+        "pytest tests/"
+      ]
+    }
+  }
+}
