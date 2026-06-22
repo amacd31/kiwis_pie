@@ -1,18 +1,17 @@
-name: "Publish release to PyPI"
+name: "Build development package"
 
 on:
   push:
+    branches:
+      - main
     tags:
-      - v*
+      - "*"
+  pull_request:
+  workflow_dispatch:
 
 jobs:
   run:
     runs-on: ubuntu-latest
-    environment:
-      name: pypi
-    permissions:
-      id-token: write
-      contents: read
     steps:
       - name: Checkout
         uses: actions/checkout@v6
@@ -25,5 +24,8 @@ jobs:
         run: uv python install 3.14
       - name: Build
         run: uv build
-      - name: Publish
-        run: uv publish
+      - name: Upload package
+        uses: actions/upload-artifact@v4
+        with:
+          name: wheels-sdist
+          path: dist
