@@ -62,6 +62,20 @@ Example using the KiWIS service that backs the Australian Bureau of Meteorology'
  # Optionally use the `keep_tz` option to return in local timezone instead of UTC
  k.get_timeseries_values(ts_id = ts_id, to = date(2016,1,31), **{'from': date(2016,1,1)}, keep_tz=True)
 
+::
+
+# Request and save a graph
+graph_bytes = k.get_graph(ts_id=ts_id, period='P7D')
+with open('timeseries_plot.png', 'wb') as f:
+    f.write(graph_bytes)
+
+::
+
+# Test system-wide quality codes dictionary
+quality_codes = k.get_quality_codes()
+print(quality_codes)
+
+
 Documentation
 -------------
 The methods on the KIWIS class all have docstrings detailing the keyword arguments they take.
